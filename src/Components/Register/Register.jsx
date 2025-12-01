@@ -1,11 +1,49 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Register = () => {
-  const { signInWithGoogle } = useContext(AuthContext);
+  const { createUser, signInWithGoogle } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const [error, setError] = useState("");
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    setError("");
+
+    const form = e.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const photo = form.photo.value;
+    const password = form.password.value;
+
+    // ==========================
+    // Password Validations
+    // ==========================
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long.");
+      return;
+    }
+    if (!/[A-Z]/.test(password)) {
+      setError("Password must contain at least one uppercase letter.");
+      return;
+    }
+    if (!/[a-z]/.test(password)) {
+      setError("Password must contain at least one lowercase letter.");
+      return;
+    }
+
+    // Firebase create user
+    createUser(email, password)
+      .then(() => {
+        toast.success("Registration successful!");  // ✅ Success toast
+        navigate("/"); // redirect on success
+      })
+      .catch((err) => setError(err.message));
+  };
 
   const handleGoogleSignIn = () => {
     signInWithGoogle()
@@ -21,59 +59,68 @@ const Register = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(newUser)
         })
-        .then(res => res.json())
-        .then(data => {
-          console.log('Backend response:', data);
-          if (data.user) {
-            console.log('User info:', data.user.name, data.user.email);
-          }
-          navigate('/'); // redirect after successful login
-        })
-        .catch(err => console.error('Error saving user:', err));
+          .then(res => res.json())
+          .then(() => {
+            toast.success("Login with Google successful!");  // ✅ Success toast
+            navigate('/');
+          })
+          .catch(err => console.error('Error saving user:', err));
       })
       .catch(err => console.error('Google sign-in error:', err));
   };
 
   return (
     <div className="hero bg-base-200 min-h-screen">
+      <Toaster position="top-right" reverseOrder={false} /> {/* Toast container */}
       <div className="hero-content flex-col lg:flex-row-reverse">
+
         <div className="card bg-base-100 w-full max-w-sm shadow-2xl">
           <h1 className="text-4xl text-center font-bold m-1">Register Your Account</h1>
+
           <div className="card-body">
-            <fieldset className="fieldset">
+            <form onSubmit={handleRegister} className="fieldset">
+
               <label className="label">Service Name</label>
-              <input type="text" className="input" placeholder="Service Name" required />
+              <input type="text" name="name" className="input" placeholder="Service Name" required />
 
               <label className="label">Email</label>
-              <input type="email" className="input" placeholder="Email" required />
+              <input type="email" name="email" className="input" placeholder="Email" required />
 
               <label className="label">Photo URL</label>
-              <input type="text" className="input" placeholder="Photo URL" required />
+              <input type="text" name="photo" className="input" placeholder="Photo URL" required />
 
               <label className="label">Password</label>
-              <input type="password" className="input" placeholder="Password" required />
+              <input type="password" name="password" className="input" placeholder="Password" required />
+
+              {/* Error Message */}
+              {error && (
+                <p className="text-red-500 mt-2 font-semibold">{error}</p>
+              )}
 
               <button className="btn btn-neutral mt-4">Register</button>
+            </form>
 
-              <div className="relative flex py-5 items-center">
-                <div className="flex-grow border-t border-gray-400"></div>
-                <span className="flex-shrink mx-4 text-gray-400">OR</span>
-                <div className="flex-grow border-t border-gray-400"></div>
-              </div>
+            {/* Divider */}
+            <div className="relative flex py-5 items-center">
+              <div className="flex-grow border-t border-gray-400"></div>
+              <span className="flex-shrink mx-4 text-gray-400">OR</span>
+              <div className="flex-grow border-t border-gray-400"></div>
+            </div>
 
-              <button
-                type="button"
-                onClick={handleGoogleSignIn}
-                className="btn bg-white text-black border-[#e5e5e5]"
-              >
-                <FcGoogle className="inline mr-2" /> Login with Google
-              </button>
+            {/* Google Login */}
+            <button
+              type="button"
+              onClick={handleGoogleSignIn}
+              className="btn bg-white text-black border-[#e5e5e5]"
+            >
+              <FcGoogle className="inline mr-2" /> Login with Google
+            </button>
 
-              <p className="font-bold mt-3">
-                Already have an account?
-                <Link to="/login" className="text-red-500"> Login</Link>
-              </p>
-            </fieldset>
+            <p className="font-bold mt-3">
+              Already have an account?
+              <Link to="/login" className="text-red-500"> Login</Link>
+            </p>
+
           </div>
         </div>
       </div>
