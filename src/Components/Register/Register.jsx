@@ -20,9 +20,6 @@ const Register = () => {
     const photo = form.photo.value;
     const password = form.password.value;
 
-    // ==========================
-    // Password Validations
-    // ==========================
     if (password.length < 6) {
       setError("Password must be at least 6 characters long.");
       return;
@@ -36,11 +33,10 @@ const Register = () => {
       return;
     }
 
-    // Firebase create user
     createUser(email, password)
       .then(() => {
-        toast.success("Registration successful!");  // ✅ Success toast
-        navigate("/"); // redirect on success
+        toast.success("Registration successful!"); 
+        navigate("/");
       })
       .catch((err) => setError(err.message));
   };
@@ -61,7 +57,7 @@ const Register = () => {
         })
           .then(res => res.json())
           .then(() => {
-            toast.success("Login with Google successful!");  // ✅ Success toast
+            toast.success("Login with Google successful!"); 
             navigate('/');
           })
           .catch(err => console.error('Error saving user:', err));
@@ -71,7 +67,7 @@ const Register = () => {
 
   return (
     <div className="hero bg-base-200 min-h-screen">
-      <Toaster position="top-right" reverseOrder={false} /> {/* Toast container */}
+      <Toaster position="top-right" reverseOrder={false} /> 
       <div className="hero-content flex-col lg:flex-row-reverse">
 
         <div className="card bg-base-100 w-full max-w-sm shadow-2xl">
@@ -80,8 +76,8 @@ const Register = () => {
           <div className="card-body">
             <form onSubmit={handleRegister} className="fieldset">
 
-              <label className="label">Service Name</label>
-              <input type="text" name="name" className="input" placeholder="Service Name" required />
+              <label className="label">Name</label>
+              <input type="text" name="name" className="input" placeholder="Enter your name" required />
 
               <label className="label">Email</label>
               <input type="email" name="email" className="input" placeholder="Email" required />
@@ -91,8 +87,6 @@ const Register = () => {
 
               <label className="label">Password</label>
               <input type="password" name="password" className="input" placeholder="Password" required />
-
-              {/* Error Message */}
               {error && (
                 <p className="text-red-500 mt-2 font-semibold">{error}</p>
               )}
@@ -100,14 +94,11 @@ const Register = () => {
               <button className="btn btn-neutral mt-4">Register</button>
             </form>
 
-            {/* Divider */}
             <div className="relative flex py-5 items-center">
               <div className="flex-grow border-t border-gray-400"></div>
               <span className="flex-shrink mx-4 text-gray-400">OR</span>
               <div className="flex-grow border-t border-gray-400"></div>
             </div>
-
-            {/* Google Login */}
             <button
               type="button"
               onClick={handleGoogleSignIn}

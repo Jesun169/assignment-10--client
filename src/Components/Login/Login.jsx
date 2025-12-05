@@ -14,7 +14,7 @@ const Login = () => {
 
   const from = location.state?.from?.pathname || "/";
 
-//  email login
+    // email
   const handleLogin = (e) => {
     e.preventDefault();
 
@@ -29,7 +29,7 @@ const Login = () => {
         navigate(from, { replace: true });
       })
       .catch((err) => {
-        toast.error(err.message);
+        toast.error("Wrong email or password!");
       });
   };
 

@@ -8,7 +8,7 @@ const PrivateRoute = () => {
 
   if (loading) return <p className="text-center mt-10">Loading...</p>;
 
-  // Redirect
+
   if (!user) return <Navigate to="/login" state={{ from: location }} replace />;
 
   return <Outlet />;
