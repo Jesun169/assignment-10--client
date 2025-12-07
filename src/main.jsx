@@ -17,8 +17,6 @@ import PrivateRoute from "./Components/PrivateRoutes/PrivateRoute.jsx";
 import AuthProvider from "./context/AuthProvider.jsx";
 import ThemeProvider from "./context/ThemeProvider.jsx";
 import { Toaster } from "react-hot-toast";
-
-// ⭐ Import your Error Page
 import ErrorPage from "./Components/ErrorPage/ErrorPage.jsx";
 
 const router = createBrowserRouter([
@@ -46,8 +44,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-
-  // Optional global fallback (not required but safe)
   {
     path: "*",
     element: <ErrorPage />,

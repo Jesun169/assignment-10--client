@@ -35,9 +35,14 @@ const MyServices = () => {
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this service?")) return;
+
     try {
-      const res = await fetch(`http://localhost:3000/services/${id}`, { method: "DELETE" });
+      const res = await fetch(`http://localhost:3000/services/${id}`, {
+        method: "DELETE",
+      });
+
       const data = await res.json();
+
       if (data.deletedId) {
         toast.success("Service deleted!");
         setServices(services.filter((s) => s._id !== id));
@@ -69,13 +74,17 @@ const MyServices = () => {
     if (!selectedService) return;
 
     try {
-      const res = await fetch(`http://localhost:3000/services/${selectedService._id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(editData),
-      });
+      const res = await fetch(
+        `http://localhost:3000/services/${selectedService._id}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(editData),
+        }
+      );
 
       const data = await res.json();
+
       if (data.modifiedCount) {
         toast.success("Service updated!");
         setServices(
@@ -129,8 +138,18 @@ const MyServices = () => {
                   <td>{service.category}</td>
                   <td>{service.price}</td>
                   <td className="space-x-2">
-                    <button className="btn btn-sm btn-warning" onClick={() => openEditModal(service)}>Update</button>
-                    <button className="btn btn-sm btn-error" onClick={() => handleDelete(service._id)}>Delete</button>
+                    <button
+                      className="btn btn-sm btn-warning"
+                      onClick={() => openEditModal(service)}
+                    >
+                      Update
+                    </button>
+                    <button
+                      className="btn btn-sm btn-error"
+                      onClick={() => handleDelete(service._id)}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </motion.tr>
               ))}
@@ -154,29 +173,45 @@ const MyServices = () => {
               exit={{ scale: 0.7, opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <button className="absolute top-2 right-2 text-red-500 font-bold" onClick={closeEditModal}>X</button>
+              <button
+                className="absolute top-2 right-2 text-red-500 font-bold"
+                onClick={closeEditModal}
+              >
+                X
+              </button>
+
               <h2 className="text-2xl font-bold mb-4">Update Service</h2>
+
               <input
                 type="text"
                 value={editData.service_name}
-                onChange={(e) => setEditData({ ...editData, service_name: e.target.value })}
+                onChange={(e) =>
+                  setEditData({ ...editData, service_name: e.target.value })
+                }
                 className="input input-bordered w-full mb-3"
                 placeholder="Service Name"
               />
+
               <input
                 type="text"
                 value={editData.category}
-                onChange={(e) => setEditData({ ...editData, category: e.target.value })}
+                onChange={(e) =>
+                  setEditData({ ...editData, category: e.target.value })
+                }
                 className="input input-bordered w-full mb-3"
                 placeholder="Category"
               />
+
               <input
                 type="number"
                 value={editData.price}
-                onChange={(e) => setEditData({ ...editData, price: e.target.value })}
+                onChange={(e) =>
+                  setEditData({ ...editData, price: e.target.value })
+                }
                 className="input input-bordered w-full mb-4"
                 placeholder="Price"
               />
+
               <motion.button
                 className="btn btn-primary w-full"
                 onClick={handleUpdate}
