@@ -17,7 +17,7 @@ const AddService = () => {
 
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:3000/services", {
+      const res = await fetch("https://assignment-10-server-ten-omega.vercel.app/services", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

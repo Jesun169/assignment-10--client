@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 const ServiceList = () => {
   const [services, setServices] = useState([]);
@@ -15,14 +16,14 @@ const ServiceList = () => {
     if (minPrice) params.append("min", minPrice);
     if (maxPrice) params.append("max", maxPrice);
 
-    fetch("http://localhost:3000/services/filter?" + params.toString())
+    fetch("https://assignment-10-server-ten-omega.vercel.app/services/filter?" + params.toString())
       .then((res) => res.json())
       .then((data) => setServices(data))
       .finally(() => setLoading(false));
   };
 
   useEffect(() => {
-    fetch("http://localhost:3000/services")
+    fetch("https://assignment-10-server-ten-omega.vercel.app/services")
       .then((res) => res.json())
       .then((data) => setServices(data))
       .finally(() => setLoading(false));
@@ -31,6 +32,7 @@ const ServiceList = () => {
   return (
     <div className="p-10">
 
+      {/* Filter Inputs */}
       <div className="flex gap-3 mb-5">
         <input
           type="number"
@@ -53,26 +55,40 @@ const ServiceList = () => {
         </button>
       </div>
 
+      {/* Loading Spinner */}
       {loading ? (
         <span className="loading loading-dots"></span>
       ) : (
-        <div className="grid md:grid-cols-3 gap-6">
-          {services.map((s) => (
-            <div key={s._id} className="card bg-base-100 shadow-xl">
-              <figure>
-                <img className="h-60 w-full object-cover" src={s.image_url} />
-              </figure>
-              <div className="card-body">
-                <h2 className="card-title">{s.service_name}</h2>
-                <p>{s.description}</p>
-                <p className="font-bold">Price: {s.price}</p>
-                <Link to={`/services/${s._id}`}>
-                  <button className="btn btn-primary">Details</button>
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
+        <motion.div
+          layout
+          className="grid md:grid-cols-3 gap-6"
+        >
+          <AnimatePresence>
+            {services.map((s) => (
+              <motion.div
+                key={s._id}
+                layout
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.3 }}
+                className="card bg-base-100 shadow-xl"
+              >
+                <figure>
+                  <img className="h-60 w-full object-cover" src={s.image_url} />
+                </figure>
+                <div className="card-body">
+                  <h2 className="card-title">{s.service_name}</h2>
+                  <p>{s.description}</p>
+                  <p className="font-bold">Price: {s.price}</p>
+                  <Link to={`/services/${s._id}`}>
+                    <button className="btn btn-primary">Details</button>
+                  </Link>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       )}
     </div>
   );

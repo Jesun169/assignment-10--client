@@ -12,7 +12,7 @@ const ServiceDetails = () => {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/services/${id}`)
+    fetch(`https://assignment-10-server-ten-omega.vercel.app/services/${id}`)
       .then((res) => res.json())
       .then((data) => setService(data));
   }, [id]);
@@ -30,7 +30,7 @@ const ServiceDetails = () => {
       price: service.price,
     };
 
-    fetch("http://localhost:3000/bookings", {
+    fetch("https://assignment-10-server-ten-omega.vercel.app/bookings", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(booking),

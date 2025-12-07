@@ -50,7 +50,7 @@ const Register = () => {
           image: result.user.photoURL
         };
 
-        fetch('http://localhost:3000/users', {
+        fetch('https://assignment-10-server-ten-omega.vercel.app/users', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(newUser)

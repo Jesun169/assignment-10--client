@@ -10,7 +10,7 @@ const Hero = () => {
   const [services, setServices] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/services")
+    fetch("https://assignment-10-server-ten-omega.vercel.app/services")
       .then((res) => res.json())
       .then((data) => setServices(data.slice(0, 5)))
       .catch((err) => console.error("Error fetching services:", err));

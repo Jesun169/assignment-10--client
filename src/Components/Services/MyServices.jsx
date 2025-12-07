@@ -18,7 +18,7 @@ const MyServices = () => {
   const fetchServices = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:3000/services?userId=${userId}`);
+      const res = await fetch(`https://assignment-10-server-ten-omega.vercel.app/services?userId=${userId}`);
       const data = await res.json();
       setServices(data);
     } catch (err) {
@@ -37,7 +37,7 @@ const MyServices = () => {
     if (!window.confirm("Are you sure you want to delete this service?")) return;
 
     try {
-      const res = await fetch(`http://localhost:3000/services/${id}`, {
+      const res = await fetch(`https://assignment-10-server-ten-omega.vercel.app/services/${id}`, {
         method: "DELETE",
       });
 
@@ -75,7 +75,7 @@ const MyServices = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:3000/services/${selectedService._id}`,
+        `https://assignment-10-server-ten-omega.vercel.app/services/${selectedService._id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

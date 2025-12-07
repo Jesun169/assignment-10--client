@@ -12,12 +12,12 @@ const MyBookings = () => {
 
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:3000/bookings?userEmail=${user.email}`);
+      const res = await fetch(`https://assignment-10-server-ten-omega.vercel.app/bookings?userEmail=${user.email}`);
       const data = await res.json();
 
       const bookingsWithService = await Promise.all(
         data.map(async (booking) => {
-          const serviceRes = await fetch(`http://localhost:3000/services/${booking.serviceId}`);
+          const serviceRes = await fetch(`https://assignment-10-server-ten-omega.vercel.app/services/${booking.serviceId}`);
           const service = await serviceRes.json();
           return {
             ...booking,
@@ -78,7 +78,7 @@ const MyBookings = () => {
     if (!confirmCancel) return;
 
     try {
-      const res = await fetch(`http://localhost:3000/bookings/${id}`, {
+      const res = await fetch(`https://assignment-10-server-ten-omega.vercel.app/bookings/${id}`, {
         method: "DELETE",
       });
       const data = await res.json();

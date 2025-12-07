@@ -14,7 +14,7 @@ const Login = () => {
 
   const from = location.state?.from?.pathname || "/";
 
-    // email
+  // email/password login
   const handleLogin = (e) => {
     e.preventDefault();
 
@@ -28,7 +28,7 @@ const Login = () => {
         toast.success("Login successful!");
         navigate(from, { replace: true });
       })
-      .catch((err) => {
+      .catch(() => {
         toast.error("Wrong email or password!");
       });
   };
@@ -36,22 +36,32 @@ const Login = () => {
   // google login
   const handleGoogleSignIn = () => {
     signInWithGoogle()
-      .then(() => {
+      .then((result) => {
+        if (!result || !result.user) {
+          toast.error("Google login failed.");
+          return;
+        }
+
         toast.success("Login with Google successful!");
         navigate(from, { replace: true });
       })
       .catch((err) => {
-        toast.error(err.message);
+        if (err.code === "auth/popup-closed-by-user") {
+          toast.error("Google login popup closed.");
+        } else {
+          toast.error(err.message);
+        }
       });
   };
 
   return (
     <div className="hero bg-base-200 min-h-screen">
-      <Toaster position="top-right" reverseOrder={false} /> 
+      <Toaster position="top-right" reverseOrder={false} />
       <div className="hero-content flex-col lg:flex-row-reverse">
         <div className="card bg-base-100 w-full max-w-sm shadow-2xl">
           <h1 className="text-4xl text-center font-bold">Login now!</h1>
           <div className="card-body">
+
             <form onSubmit={handleLogin} className="fieldset">
               <label className="label">Email</label>
               <input
@@ -72,10 +82,6 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-
-              <div>
-                <a className="link link-hover">Forgot password?</a>
-              </div>
 
               <button type="submit" className="btn btn-neutral mt-4">
                 Login
@@ -100,6 +106,7 @@ const Login = () => {
               Don't have an account?
               <Link to="/register" className="text-red-500"> Sign up</Link>
             </p>
+
           </div>
         </div>
       </div>
