@@ -31,8 +31,6 @@ const ServiceList = () => {
 
   return (
     <div className="p-10">
-
-      {/* Filter Inputs */}
       <div className="flex gap-3 mb-5">
         <input
           type="number"
@@ -54,8 +52,6 @@ const ServiceList = () => {
           Filter
         </button>
       </div>
-
-      {/* Loading Spinner */}
       {loading ? (
         <span className="loading loading-dots"></span>
       ) : (
